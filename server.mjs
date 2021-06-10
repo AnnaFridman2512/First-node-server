@@ -10,10 +10,12 @@ const messages = JSON.parse(messagesString);//takes a string and returns an obje
 
 const server = http.createServer(
     (request, response) => { 
-        const queryString = request.url.replace('/', '');//querystringify downloaded- returns urlrequest without / sign
+        const queryString = request.url.replace('/', '');//querystringify downloaded- returns urlrequest without / sign 
+        //console.log(queryString); ---> (?name=Anna&message=bla+bla)
         const params = qs.parse(queryString);//takes the string and returns an object
-
-        if(params.message) {//the 'message' is what we get when typing the request (can see it in the url line in the broweser)
+        //console.log(params);---> { name: 'Anna', message: 'bla bla' }
+        if(params.message) {//the 'message' is the input that we typed in, name. 
+                            //is what we get when typing the request (can see it in the url line in the broweser)({ name: 'Anna', message: 'bla bla' })
             messages.push({//we push the new object to the messagesString array 
               name: params.name,  
               text: params.message,
