@@ -4,7 +4,7 @@ import fs from 'fs';
 
 const messagesString = fs.readFileSync('messages.json', {encoding: 'UTF-8'});//fs- comes with node, we don't need to install anything extra
                                                                              //tels to read the 'messages.json' file which 
-                                                                             //is presented as an array of strings
+                                                                             //is presented as an array (our choise)
                                                                       
 const messages = JSON.parse(messagesString);//takes a string and returns an object
 
