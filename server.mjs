@@ -2,30 +2,34 @@ import http from 'http';
 import qs from 'querystringify';
 import fs from 'fs';
 
-const messagesString = fs.readFileSync('messages.json', {encoding: 'UTF-8'});
-const messages = JSON.parse(messagesString);
+const messagesString = fs.readFileSync('messages.json', {encoding: 'UTF-8'});//fs- comes with node, we don't need to install anything extra
+                                                                             //tels to read the 'messages.json' file which 
+                                                                             //is presented as an array of strings
+                                                                      
+const messages = JSON.parse(messagesString);//takes a string and returns an object
 
 const server = http.createServer(
     (request, response) => { 
-        const queryString = request.url.replace('/', '');
-        const params = qs.parse(queryString);
+        const queryString = request.url.replace('/', '');//querystringify downloaded- returns urlrequest without / sign
+        const params = qs.parse(queryString);//takes the string and returns an object
 
-        if(params.message) {
-            messages.push({
+        if(params.message) {//the 'message' is what we get when typing the request (can see it in the url line in the broweser)
+            messages.push({//we push the new object to the messagesString array 
               name: params.name,  
               text: params.message,
               time: new Date(),
             });
 
-            fs.writeFileSync(
+            fs.writeFileSync(//we write the object in the 'messages.json' file
                 'messages.json', 
-                JSON.stringify(messages), 
+                JSON.stringify(messages), //we convert the object to a string (now we have an array of strings writen in the file)
                 { encoding: 'UTF-8' }
             );
 
         }
 
-        const messagesList = messages.map(message => 
+        const messagesList = messages.map(message => //each message we create we turn to a string and add it to 'index.html' file, so next time 
+                                                    // we kill the server, our messages will be stored and read again
             `<p>${message.name}: ${message.text} (${message.time})</p>`).join('');
         let HTMLString = fs.readFileSync('index.html', {encoding: 'UTF-8'});
         HTMLString = HTMLString.replace('REPLACE_ME', messagesList);
